@@ -19,6 +19,14 @@ These steps are crucial for any future analysis. Step 2 is necessary to identify
 
 Let's look at some of the distributions of these columns. The most important columns of our dataset are 'rating' and 'avg_rating.' The distribution of each discrete rating is shown below.
 
+<iframe
+  src="assets/rating-distribution.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+
 # Assessment of Missingness
 
 # Hypothesis Testing
