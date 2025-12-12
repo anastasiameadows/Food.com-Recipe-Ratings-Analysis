@@ -77,9 +77,9 @@ Here are my two hypotheses:
 My test statistic is the difference in mean-squared errors between the two groups. Using difference of means for a test-statistic is standard for a two-tailed permutation test, which I will perform to determine the fairness of my model. I will use a significance level of p = 0.05.
 
 After running a two-tailed permutation test with 1,000 permutations, I found the following statistics:
-Observed difference in MSE between the 2 groups: -0.018981
-Observed difference in RMSE between the two groups: -0.026868
-P-value: 0.0070
+- Observed difference in MSE between the 2 groups: -0.018981
+- Observed difference in RMSE between the two groups: -0.026868
+- P-value: 0.0070
 
 Because the resulting p-value (0.007) is less than our significance level, I reject the null hypothesis. There is a significant difference between how my final model treats the two groups, meaning that the model is unfair.
 
