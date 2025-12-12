@@ -26,6 +26,29 @@ Let's look at some of the distributions of these columns. The most important col
   frameborder="0"
 ></iframe>
 
+The vast majority of recipes are rated a 5/5. This implies that no matter what kind of recipe it is, the ratings are bound to skew higher. This is an important consideration to keep in mind. It presents us with two possible alternatives: the majority of recipes on Food.com are perfect, or that the users are more likely to post a review when they enjoy a recipe. Thankfully, because I will be trying to analyze the average rating of recipes, there will be more variation to analyze. Even if all the ratings skew high, we can compare the differences between a 4.2 and a 4.7 average rated recipe.
+
+To better understand the relationship between recipe ratings and the types of recipes, let's look at how the sugar content of a recipe affects its rating.
+
+<iframe
+  src="assets/sugar_rating.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+The graph above shows a ton of recipes clustered below 250 grams of sugar. This is because the average sugar content of all our recipes is around 64 grams, and the standard deviation is around 210 grams. Because we already know most recipes are 5 stars, we should expect the majority of data points to be clustered around the top left of the graph. What's most interesting about this graph is that as the sugar content grows more extreme, the lower ratings drop off. Amongst recipes with 1000 grams of sugar or more, there are only 4 1-star reviews and 5 2-star reviews. And because all the 1 and 2-star reviews after this point lie on the graph's tick marks, this implies that there is either only 1 review for this recipe or that all reviews gave that recipe the same low rating. By contrast, there are too many 3-star or more recipes to visibly count.
+
+Let's explore sugar content even further. I've created a pivot table that bins sugar content into 5 separate bins. I've also binned the number of steps a recipe has into bins. The contents of this table are the average rating based on these groups.
+
+<iframe
+  src="assets/pivot_table.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+Once again, because the ratings in our data are skewed high, every average rating in the pivot table is above a 4.5. One thing of note is that in general, recipes with very few steps or recipes with 20+ steps seem to have higher average ratings. The exception to this is recipes with the most sugar (1000g+) and the most steps (20+) which have an average rating of about 4.548. In fact, the highest ratings cluster around 1 of the two extremes: they either have lots of sugar and very few steps, or lots of steps with very little sugar. This suggests to us that users may prioritize one aspect of a recipe over all others - they care about sugar content OR they care about recipe length, but not both. For example, let's imaginge a user who is on a diet. They may be willing to spend more time cooking if the result is healthier food. This example makes intuitive sense and aligns with out data.
 
 # Assessment of Missingness
 
