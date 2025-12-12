@@ -61,3 +61,26 @@ Once again, because the ratings in our data are skewed high, every average ratin
 # Final Model
 
 # Fairness Analysis
+
+For my fairness analysis, my two groups are as follows:
+- X: Quick Recipes (30 minutes or under)
+- Y: Long Recipes (longer than 30 minutes)
+
+I chose the cutoff of 30 minutes because roughly half of the ratings belong to each group (107529 ratings of recipes 30 minutes or under versus 126900 ratings of recipes longer than 30 minutes). Given that there are just under 10000 recipes that are longer than 300 minutes (5 hours), I find this imbalance fascnating. I speculate that recipes longer than 5 hours include waiting overnight for batter, dough, or similar circumstances. Because of this, I suspect sweet recipes take longer, and because we know savory recipes are rated higher, I think there could be a slight bias towards quick recipes.
+
+Once again, my evaluation metric is the root mean-squared error (RMSE). This is the same metric used in both models. This metric measures the average prediction error for recipe ratings. A higher RMSE indicates worse model performance, meaning the model's predictions are further from the actual ratings.
+
+Here are my two hypotheses:
+- **Null:** Our model is fair. There is no significant difference between how the model treats short (30 minutes or under) versus long (over 30 minutes) recipes.
+- **Alternative:** Our model is unfair. There is a significant difference between how the model treats short (30 minutes or under) versus long (over 30 minutes) recipes.
+
+My test statistic is the difference in mean-squared errors between the two groups. Using difference of means for a test-statistic is standard for a two-tailed permutation test, which I will perform to determine the fairness of my model. I will use a significance level of p = 0.05.
+
+After running a two-tailed permutation test with 1,000 permutations, I found the following statistics:
+Observed difference in MSE between the 2 groups: -0.018981
+Observed difference in RMSE between the two groups: -0.026868
+P-value: 0.0070
+
+Because the resulting p-value (0.007) is less than our significance level, I reject the null hypothesis. There is a significant difference between how my final model treats the two groups, meaning that the model is unfair.
+
+
