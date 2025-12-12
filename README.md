@@ -43,8 +43,8 @@ Let's explore sugar content even further. I've created a pivot table that bins s
 
 <iframe
   src="assets/pivot_table.html"
-  width="800"
-  height="600"
+  width="500"
+  height="300"
   frameborder="0"
 ></iframe>
 
