@@ -108,6 +108,8 @@ With a p-value of 0.00296, we reject the null hypothesis and conclude that savor
 
 # Framing a Prediction Problem
 
+Using a regression, I would like to predict the average rating of a recipe based on the recipes attributes. The recipes attributes are the features of the model, and they include things like tags, number of steps, and minutes. I will add more features as I improve my model. The response variable is, of course, the average rating. I've chosen it to predict because we've already determined that the majority of recipes are 4 and 5-star rated. This would make predicting standard, discrete ratings uninteresting. I'm more interesting in how close to an exact average rating my model can predict - most of which should be within the 4.0-5.0 range. The metric I chose is the root mean-squared error (RMSE). It's a standard metric for performing regressions, and it penalizes larger errors more than smaller ones, which is important for the specificity of our response variable.
+
 # Baseline Model
 
 # Final Model
