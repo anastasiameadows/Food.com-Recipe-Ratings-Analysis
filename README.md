@@ -59,7 +59,7 @@ Of these columns, it is possible the missingness of the descriptions is NMAR. It
 
 However, I am much more interested in the missingness of the ratings column. There are very many missing ratings in the dataset. Following the same logic as above, wehre older recipes could have deleted decriptions, they could also have deleted ratings. I tested to see if this is the case. In addition, I tested to see if recipe length has an effect on a rating's missingness.
 
-For the first test, here are my two hypotheses:
+For the first test, here are my two hypotheses:  
 **Null:** The missingness of a rating is independent of the year the recipe was posted.    
 **Alternative:** The missingness of rating is dependent of the year the recipe was posted.  
 
@@ -76,15 +76,35 @@ I ran a permutation test on these values with 10000 permutations. This resulted 
 
 The above graph shows the difference in distributions between the years a recipe was posted depending on the missingness of the ratings column. The distributions are both skewed right, although because there are far more reviews with ratings than without, the distribution for present ratings is a lot larger. Despite this, we can clearly see that for reviews with ratings, there are far fewer reviews for recipes posted in 2009 than in 2008. By contrast, this drop-off is a lot smaller in the distribution for reviews without ratings. This implies that there are a lot more missing ratings for older recipes since the distribution for missing ratings is much more even. This makes sense intuitively - users might have deleted their old ratings, or ratings have become more commonplace overtime.
 
-I also ran a permutation test on the minutes column with respect to missing ratings. Here are my two hypotheses:
+I also ran a permutation test on the minutes column with respect to missing ratings. Here are my two hypotheses:  
 **Null:** The missingness of a rating is independent of the recipe's average rating.  
 **Alternative:** The missingness of rating is dependent of the recipe's average rating.
 
-Once again, I take the difference of means in the observed values. This is -51.45237039852127, which means recipes with ratings take on average about 50 minutes less than recipes with ratings. However, the permutation test gave a p-value of 0.1249, which is greater than 0.05, meaning this difference is insignificant, and we retain the null hypothesis.
+Once again, I take the difference of means in the observed values. This is -51.45237039852127, which means recipes with ratings take on average about 50 minutes less than recipes with ratings. However, the permutation test gave a p-value of 0.1249, which is greater than 0.05, meaning this difference is insignificant, and **we retain the null hypothesis.**
 
 Despite this, the first permutation test is evidence the missingness of the ratings column is MAR.
 
 # Hypothesis Testing
+
+I ran another permutation test based on this research question - do savory recipes tend to receive higher ratings than sweet recipes? I chose this question since savory and sweet recipes have large, roughly equal sample sizes (11679 vs 10371). It's important to note that, while all recipes should fall into a camp of either savory or sweet, not every recipe is tagged savory or sweet. We could assume these things through other tags, but that would lead to potential errors. For example, in most cases, the tag 'dessert' would imply sweet, but this is not always the case. For our purposes, since the sample sizes are still large, I will stick to the 'savory' and 'sweet' tags as indicators.
+
+Here are my hypotheses:  
+**Null:** Sweet recipes and savory recipes have the same average rating.  
+**Alternative:** Savory recipes have a higher average rating than sweet recipes.
+
+My test statistic is the difference in sample means, and I applied this statistic in a one-sided Welch's two-sample t-test with a significance level of 0.05. These choices are appropriate because of the following reasons:
+1. Ratings is numeric and ordinal, which means taking differences/averages is a meaningful.
+2. T-test relies on means, so a numeric variable is necessary
+3. Compared to a standard t-test, Welch's t-test does not assume equal variances between groups, which is necessary when using real user-generated data
+4. A significance value of 0.05 is standard
+
+After running the test, I got the following statistics:
+- Average sweet rating: 4.658320292123109
+- Average savory rating: 4.686966006180694
+- t-statistic: 2.752254802962745
+- p-value 0.0029621322519279556
+
+With a p-value of 0.00296, we reject the null hypothesis and conclude that savory recipes do have a higher rating on average. Because our ratings are skewed so high, this means there's only a small difference between the average ratings of the two groups (4.658 vs 4.687). Despite this, our results are statiscally significant. With a larger sample size, the difference between ratings would likely increase.
 
 # Framing a Prediction Problem
 
