@@ -112,13 +112,42 @@ Using a regression, I would like to predict the average rating of a recipe based
 
 # Baseline Model
 
+My baseline model uses a 75/25 train-test split and includes the following features:
+- **Tags** (Categorical): One Hot Encoder 
+- **Number of Steps** (Quantitative): Standard Scaler
+- **Minutes** (Quantitative): Standard Scaler
+
+I've chosen to only use one categorical feature since the other categorical columns in our dataset are not as relavent. Any useful information gleaned from the description or ingredients column would likely be present in the tags column. For example, since the highest rated tag is 'simply-potatoes2', we can assume that potatoes are in the ingredients, and adding ingredients as a feature will not be helpful to us.
+
+For preprocessing, I encoded the categorical feature (tags) with a OneHotEncoder. This converts each tag to a binary column (like 'sweet' or 'savory' from the earlier hypothesis test) to determine its prescence in the recipe. This allows us to determine which tags are most influential to a recipe's average rating. For the quantitative features, I normalized them using a StandardScaler. This standardizes the features to have a mean of 0 and a standard deviation of 1. This reduces the effect of any biases those features may have.
+
+One thing to note about the data is that I did not impute the missing values in the average ratings. The null values in this column are due to an absence of reviews. I do not want to inflate the average ratings by impute this data, so I will just drop the 2777 null ratings for this column. There are still over 200,000 data points to use, so this should not impact my model greatly.
+
+After running my model, I got an RMSE of 0.3570895412892633. This means the predicted ratings are off by a little more than a third of a point. While it could be improved, I think this model is a good baseline. It is reasonably accurate to the average rating. However, as we know, most ratings are between a 4 and a 5, and the average difference between sweet and savory ratings were less than a third, so even a third of a difference can be significant.
+
 # Final Model
+
+To improve my model, I will add interactive features and preform a GridSearch to determine the best hyperparameters. Here is my total list of features:
+- **Complexity Score** (Quantitative): minutes x number of steps. Determines how difficult a recipe is. This is important, since very long recipes could be hands off and require few tasks (for example, waiting for a dough to rise overnight would add several hours to the recipe yet not necessarily increase its difficulty)
+- **Log Complexity Score** (Quantitative): use log to normalize the complexity score
+- **Tags** (Categorical): One Hot Encoder 
+- **Number of Steps** (Quantitative): Quantile Transformer
+- **Minutes** (Quantitative): Quantile Transformer
+
+The new features, complexity score and log complexity score, should benefit my model by providing insight into the relationship and interactions between different features. In addition, using QuantileTransformer on the number of steps and minutes instead of StandardScaler will address any skews present in the data by mapping the features to a normal distribution. This reduces the effect of outliers, which the data contains several of. For my modeling algorithm, I will be using a Ridge Regression. This is similar to the Linear Regression I used in my baseline model, except Ridge Regressions penalize coefficients that contribute to overfitting, regularizing the model.
+
+Let's evaluate how the final model ran. After performing a GridSearchCV with 3-fold cross-validation, I determined the best hyperparameter is an alpha of 0.1. Then, running the ridge regression gave the following results:
+- **Test RMSE:** 0.356782
+- **Training RMSE:** 0.158161
+- **Improvement from baseline:**  0.000307 (~0.09% better)
+
+Overall, the final model's improvement is minimal. Additional categorical features could improve this model further. When I tried to add other features or use other modeling algorithms (like RandomForestClassifier), my results were either much worse than the baseline model due to overfitting, or my computer would crash from running the model. Because of these limitations, I am happy with the results of my final model despite its small improvement. I think it demonstrates that the baseline model already does a good job capturing and generalizing the data.
 
 # Fairness Analysis
 
 For my fairness analysis, my two groups are as follows:
-- X: Quick Recipes (30 minutes or under)
-- Y: Long Recipes (longer than 30 minutes)
+- **X: Quick Recipes** (30 minutes or under)
+- **Y: Long Recipes** (longer than 30 minutes)
 
 I chose the cutoff of 30 minutes because roughly half of the ratings belong to each group (107529 ratings of recipes 30 minutes or under versus 126900 ratings of recipes longer than 30 minutes). Given that there are just under 10000 recipes that are longer than 300 minutes (5 hours), I find this imbalance fascnating. I speculate that recipes longer than 5 hours include waiting overnight for batter, dough, or similar circumstances. Because of this, I suspect sweet recipes take longer, and because we know savory recipes are rated higher, I think there could be a slight bias towards quick recipes.
 
